@@ -1,1 +1,3 @@
-export class CreateApplicationDto {}
+export class CreateApplicationDto {
+    name: string;
+}
