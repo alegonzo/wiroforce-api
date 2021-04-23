@@ -6,11 +6,11 @@ import { CreateApplicationDto } from '../dto/create-application.dto';
 import { Application } from '../entities/application.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('applications')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) { }
 
-  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   create(
@@ -20,7 +20,6 @@ export class ApplicationController {
     return this.applicationService.create(createApplicationDto, image, req.user.company);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Req() req): Promise<Application[]> {
     return this.applicationService.findAll(req.user.company.id);

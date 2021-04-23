@@ -34,6 +34,10 @@ export class ProductService {
     return this.productRepository.find({ where: { applicationId: app.id } });
   }
 
+  findAllMobile(id: number): Promise<Product[]> {
+    return this.productRepository.find({ where: { applicationId: id } });
+  }
+
   findOne(id: number): Promise<Product> {
     return this.productRepository.findOne(id);
   }

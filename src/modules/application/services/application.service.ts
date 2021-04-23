@@ -50,6 +50,10 @@ export class ApplicationService {
     return this.applicationRepository.findOne({ where: { appId: appId } });
   }
 
+  findOneByToken(token: string): Promise<Application> {
+    return this.applicationRepository.findOne({ where: { token: token } });
+  }
+
   update(id: number, updateApplicationDto: UpdateApplicationDto) {
     return `This action updates a #${id} application`;
   }
