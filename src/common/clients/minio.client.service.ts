@@ -18,10 +18,6 @@ export class MinioClientService {
         });
     }
 
-    createBucket() {
-
-    }
-
     setPolicy(bucketName: string): Promise<any> {
         const policy = {
             "Version": "2012-10-17",
