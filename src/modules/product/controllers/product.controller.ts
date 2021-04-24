@@ -5,12 +5,16 @@ import { UpdateProductDto } from '../dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Product } from '../entities/product.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('In-App-Purchase Products')
 @UseGuards(JwtAuthGuard)
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
+  @ApiResponse({ status: 200, type: Product })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   create(
@@ -20,6 +24,8 @@ export class ProductController {
     return this.productService.create(createProductDto, image);
   }
 
+  @ApiQuery({ required: true, name: 'appId' })
+  @ApiResponse({ status: 200, type: [Product] })
   @Get()
   findAll(
     @Query('appId') appId: string,
@@ -27,11 +33,15 @@ export class ProductController {
     return this.productService.findAll(appId);
   }
 
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: Product })
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.productService.findOne(+id);
   }
 
+  @ApiParam({ name: 'id' })
+  @ApiResponse({ status: 200, type: Product })
   @UseInterceptors(FileInterceptor('image'))
   @Put(':id')
   update(
