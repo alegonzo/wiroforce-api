@@ -1,20 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, UseInterceptors, UploadedFile, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UseGuards, Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApplicationService } from '../services/application.service';
 import { CreateApplicationDto } from '../dto/create-application.dto';
 //import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { Application } from '../entities/application.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
+@ApiForbiddenResponse({ description: 'Forbidden Exception' })
 @ApiTags('Applications')
 @UseGuards(JwtAuthGuard)
 @Controller('applications')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) { }
 
-  @ApiResponse({ status: 200, type: Application })
+  @ApiCreatedResponse({ type: Application })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   create(
@@ -24,13 +25,13 @@ export class ApplicationController {
     return this.applicationService.create(createApplicationDto, image, req.user.company);
   }
 
-  @ApiResponse({ status: 200, type: [Application] })
+  @ApiOkResponse({ type: [Application] })
   @Get()
   findAll(@Req() req): Promise<Application[]> {
     return this.applicationService.findAll(req.user.company.id);
   }
 
-  @ApiResponse({ status: 200, type: Application })
+  @ApiOkResponse({ type: Application })
   @Get(':id')
   findOne(@Param('id') id: number): Promise<Application> {
     return this.applicationService.findOneById(+id);

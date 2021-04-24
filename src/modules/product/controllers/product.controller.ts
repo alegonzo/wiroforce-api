@@ -1,20 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Req, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, UploadedFile, Req, Query, Put } from '@nestjs/common';
 import { ProductService } from '../services/product.service';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Product } from '../entities/product.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
+@ApiForbiddenResponse({ description: 'Forbidden exception' })
 @ApiTags('In-App-Purchase Products')
 @UseGuards(JwtAuthGuard)
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
-  @ApiResponse({ status: 200, type: Product })
+  @ApiCreatedResponse({ type: Product })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
   create(
@@ -25,7 +26,7 @@ export class ProductController {
   }
 
   @ApiQuery({ required: true, name: 'appId' })
-  @ApiResponse({ status: 200, type: [Product] })
+  @ApiOkResponse({ type: [Product] })
   @Get()
   findAll(
     @Query('appId') appId: string,
@@ -34,14 +35,14 @@ export class ProductController {
   }
 
   @ApiParam({ name: 'id' })
-  @ApiResponse({ status: 200, type: Product })
+  @ApiOkResponse({ type: Product })
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.productService.findOne(+id);
   }
 
   @ApiParam({ name: 'id' })
-  @ApiResponse({ status: 200, type: Product })
+  @ApiOkResponse({ type: Product })
   @UseInterceptors(FileInterceptor('image'))
   @Put(':id')
   update(
