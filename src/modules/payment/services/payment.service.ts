@@ -1,13 +1,13 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ApplicationService } from '../application/services/application.service';
-import { ProductService } from '../product/services/product.service';
-import { EntumovilDto } from './dto/entumovil.dto';
-import { EntumovilPayment } from './entities/entumovil-payment.entity';
-import { Payment } from './entities/payment.entity';
-import * as PaymentValues from './utils/payment-values';
-import { PaymentVia } from './utils/via.enum';
+import { ApplicationService } from '../../application/services/application.service';
+import { ProductService } from '../../product/services/product.service';
+import { EntumovilDto } from '../dto/entumovil.dto';
+import { EntumovilPayment } from '../entities/entumovil-payment.entity';
+import { Payment } from '../entities/payment.entity';
+import * as PaymentValues from '../utils/payment-values';
+import { PaymentVia } from '../utils/via.enum';
 import * as crypto from 'crypto';
 
 
