@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Application } from "../../application/entities/application.entity";
+import { Payment } from "../../payment/entities/payment.entity";
 
 @Entity()
 export class Product {
@@ -60,6 +61,9 @@ export class Product {
 
     @ManyToOne(type => Application, application => application.products)
     application: Application;
+
+    @OneToMany(() => Payment, payment => payment.product)
+    payments: Payment[];
 
     constructor(partial: Partial<Product>) {
         Object.assign(this, partial);

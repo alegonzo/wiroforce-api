@@ -33,8 +33,8 @@ export class ApplicationController {
 
   @ApiOkResponse({ type: Application })
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<Application> {
-    return this.applicationService.findOneById(+id);
+  findOne(@Param('id') id: string): Promise<Application> {
+    return this.applicationService.findOneByAppId(id);
   }
 
   /*@Patch(':id')

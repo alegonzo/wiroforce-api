@@ -1,5 +1,5 @@
 import { ApiPropertyOptional } from "@nestjs/swagger";
-import { IsBoolean, IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsBooleanString, IsNumberString, IsOptional, IsString } from "class-validator";
 
 export class UpdateProductDto {
     @ApiPropertyOptional()
@@ -19,7 +19,7 @@ export class UpdateProductDto {
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsBoolean()
+    @IsBooleanString()
     offline: boolean;
 
     @ApiPropertyOptional()

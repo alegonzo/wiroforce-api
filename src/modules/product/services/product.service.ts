@@ -17,7 +17,7 @@ export class ProductService {
   ) { }
 
   async create(createProductDto: CreateProductDto, file: Express.Multer.File): Promise<Product> {
-    const application = await this.applicationService.findOneById(createProductDto.applicationId);
+    const application = await this.applicationService.findOneByAppId(createProductDto.appId);
     const product = new Product({
       ...createProductDto,
       active: true,
@@ -40,6 +40,10 @@ export class ProductService {
 
   findOne(id: number): Promise<Product> {
     return this.productRepository.findOne(id);
+  }
+
+  findOneByItemId(itemId: string): Promise<Product> {
+    return this.productRepository.findOne({ where: { itemId: itemId } });
   }
 
   async update(id: number, updateProductDto: UpdateProductDto, file: Express.Multer.File): Promise<Product> {

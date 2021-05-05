@@ -12,15 +12,15 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async validateUser(loginDto: LoginDto) {
+    async validateUser(email: string, pass: string) {
         // find if user exist with this email
-        const user = await this.userService.findOneByEmail(loginDto.email);
+        const user = await this.userService.findOneByEmail(email);
         if (!user) {
             return null;
         }
 
         // find if user password match
-        const match = await this.comparePassword(loginDto.password, user.password);
+        const match = await this.comparePassword(pass, user.password);
         if (!match) {
             return null;
         }

@@ -1,0 +1,9 @@
+export const entumovilFee: number = 0.4;
+export const platformFee: number = 0.1;
+export const clientFee: number = 0.9;
+export const shortNumber4: string = '8022';
+export const shortNumber4Price: number = 4;
+export const shortNumber25: string = '8023';
+export const shortNumber25Price: number = 25;
+export const entumovilUrl: string = 'http://blueeye-http.bigavatar.cubacel.entumovil.cu/sendMsg';
+
