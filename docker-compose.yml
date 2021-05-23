@@ -1,0 +1,22 @@
+version: '3'
+services:
+   api:
+     image: wiroforce-api
+     restart: always
+     environment:
+       - JWT_SECRET=12345678 
+       - APP_PORT=9013
+       - DB_HOST=host.docker.internal
+       - DB_PORT=9012
+       - DB_USERNAME=root
+       - DB_PASSWORD=8*9klMy6!Lp023
+       - DB_NAME=wiroforce
+       - MINIO_URL=conwiro.nat.cu
+       - MINIO_PORT=9010
+       - MINIO_ACCESS_KEY=admin775
+       - MINIO_SECRET_KEY=Jo8Pm*gh
+       - DEFAULT_BUCKET=wiro-force
+     build:
+          context: .
+     ports:
+       - 9013:3000
