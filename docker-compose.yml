@@ -7,7 +7,7 @@ services:
        - JWT_SECRET=12345678 
        - APP_PORT=9013
        - DB_HOST=conwiro.nat.cu
-       - DB_PORT=9012
+       - DB_PORT=9011
        - DB_USERNAME=root
        - DB_PASSWORD=8*9klMy6!Lp023
        - DB_NAME=wiroforce
