@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Product } from "../../product/entities/product.entity";
 import { PaymentVia } from "../utils/via.enum";
 
@@ -8,15 +8,19 @@ export class Payment {
     id: number;
 
     @Column()
+    @Index()
     userHash: string;
 
-    @Column()
+    @Column({ type: 'float' })
+    originalAmount: number;
+
+    @Column({ type: 'float' })
     totalAmount: number;
 
-    @Column()
+    @Column({ type: 'float' })
     clientAmount: number;
 
-    @Column()
+    @Column({ type: 'float' })
     platformAmount: number;
 
     @Column({ nullable: true })

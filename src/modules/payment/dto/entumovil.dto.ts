@@ -3,4 +3,5 @@ export class EntumovilDto {
     msisdn: string;
     mstext: string;
     sender: string;
+    createdAt: Date;
 }

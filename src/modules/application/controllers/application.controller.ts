@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UseGuards, Req, UseFilters, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApplicationService } from '../services/application.service';
 import { CreateApplicationDto } from '../dto/create-application.dto';
@@ -6,6 +6,7 @@ import { CreateApplicationDto } from '../dto/create-application.dto';
 import { Application } from '../entities/application.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { BaseExceptionFilter } from '@nestjs/core';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })

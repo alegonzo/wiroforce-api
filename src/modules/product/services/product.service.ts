@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MinioClientService } from '../../../common/clients/minio.client.service';
@@ -18,14 +18,29 @@ export class ProductService {
 
   async create(createProductDto: CreateProductDto, file: Express.Multer.File): Promise<Product> {
     const application = await this.applicationService.findOneByAppId(createProductDto.appId);
+    const productCheck = await this.productRepository.findOne({
+      where: {
+        itemId: createProductDto.itemId,
+        applicationId: application.id
+      }
+    });
+    if (productCheck) {
+      throw new BadRequestException({
+        status: 400,
+        errors: {
+          itemId: 'El producto ya existe en esta aplicacion'
+        }
+      });
+    }
     const product = new Product({
       ...createProductDto,
       active: true,
       application: application,
-      imageUrl: `products/${application.appId}/${createProductDto.itemId}.png`,
+      imageUrl: file ? `products/${application.appId}/${createProductDto.itemId}.png` : null,
       version: 1
-    })
-    await this.minioClient.uploadFileBuffer(product.imageUrl, file.buffer);
+    });
+    if (file)
+      await this.minioClient.uploadFileBuffer(product.imageUrl, file.buffer);
     return this.productRepository.save(product);
   }
 

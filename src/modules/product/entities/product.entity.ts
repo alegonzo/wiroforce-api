@@ -30,7 +30,7 @@ export class Product {
     resourceAmount: string;
 
     @ApiProperty()
-    @Column()
+    @Column({ nullable: true })
     imageUrl: string;
 
     @ApiProperty()

@@ -18,7 +18,7 @@ export class MinioClientService {
         });
     }
 
-    setPolicy(bucketName: string): Promise<any> {
+    setPublicPolicy(): Promise<any> {
         const policy = {
             "Version": "2012-10-17",
             "Statement": [
@@ -34,7 +34,7 @@ export class MinioClientService {
                         "s3:ListBucket"
                     ],
                     "Resource": [
-                        `arn:aws:s3:::${bucketName}`
+                        `arn:aws:s3:::${this.defaultBucket}`
                     ]
                 },
                 {
@@ -48,12 +48,12 @@ export class MinioClientService {
                         "s3:GetObject"
                     ],
                     "Resource": [
-                        `arn:aws:s3:::${bucketName}/*`
+                        `arn:aws:s3:::${this.defaultBucket}/*`
                     ]
                 }
             ]
         };
-        return this.minioClient.setBucketPolicy(bucketName, JSON.stringify(policy));
+        return this.minioClient.setBucketPolicy(this.defaultBucket, JSON.stringify(policy));
     }
 
     async uploadFileBuffer(path: string, buffer: Buffer): Promise<any> {

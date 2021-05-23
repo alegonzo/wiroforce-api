@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class EntumovilPayment {
@@ -12,6 +12,7 @@ export class EntumovilPayment {
     body: string;
 
     @Column()
+    @Index()
     phoneSender: string;
 
     @Column()

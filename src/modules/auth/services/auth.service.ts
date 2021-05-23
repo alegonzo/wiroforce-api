@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/services/user.service';
-import { LoginDto } from '../dto/login.dto';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
 
 @Injectable()
@@ -13,20 +12,17 @@ export class AuthService {
     ) { }
 
     async validateUser(email: string, pass: string) {
-        // find if user exist with this email
         const user = await this.userService.findOneByEmail(email);
-        if (!user) {
+        if (!user)
             return null;
-        }
-
-        // find if user password match
+        if (!user.active)
+            return null;
         const match = await this.comparePassword(pass, user.password);
-        if (!match) {
+        if (!match)
             return null;
-        }
 
         // tslint:disable-next-line: no-string-literal
-        const { password, ...result } = user;
+        const { password, profile, companyId, createdAt, active, updatedAt, ...result } = user;
         return result;
     }
 
@@ -36,18 +32,10 @@ export class AuthService {
     }
 
     public async create(user: CreateUserDto) {
-        // hash the password
         const pass = await this.hashPassword(user.password);
-
-        // create the user
         const newUser = await this.userService.create({ ...user, password: pass });
-
-        const { password, ...result } = newUser;
-
-        // generate token
+        const { password, profile, companyId, createdAt, active, updatedAt, ...result } = newUser;
         const token = await this.generateToken(result);
-
-        // return the user and the token
         return { user: result, token };
     }
 

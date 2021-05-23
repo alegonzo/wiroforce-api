@@ -7,7 +7,8 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) { }
 
   @Post('entumovil')
-  entumovilPayment(@Body() entumovilDto: EntumovilDto) {
-    return this.paymentService.saveEntumovilPayment(entumovilDto);
+  async entumovilPayment(@Body() entumovilDto: EntumovilDto) {
+    await this.paymentService.saveEntumovilPayment(entumovilDto);
+    return { status: 200, message: "Pago registrado correctamente" };
   }
 }
