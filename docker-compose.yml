@@ -6,7 +6,7 @@ services:
      environment:
        - JWT_SECRET=12345678 
        - APP_PORT=9013
-       - DB_HOST=host.docker.internal
+       - DB_HOST=conwiro.nat.cu
        - DB_PORT=9012
        - DB_USERNAME=root
        - DB_PASSWORD=8*9klMy6!Lp023
