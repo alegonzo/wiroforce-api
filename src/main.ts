@@ -1,4 +1,5 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
@@ -12,6 +13,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api/v1');
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
+  const configService = app.get(ConfigService);
 
   const minioConfig = app.get(MinioClientService);
   await minioConfig.createDefaultBucket();
@@ -30,6 +33,6 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
 
-  await app.listen(3001);
+  await app.listen(configService.get<number>('APP_PORT'));
 }
 bootstrap();
