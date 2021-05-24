@@ -10,6 +10,7 @@ import * as PaymentValues from '../utils/payment-values';
 import { PaymentVia } from '../utils/via.enum';
 import * as crypto from 'crypto';
 import * as fs from 'fs';
+import { sub } from 'date-fns';
 
 @Injectable()
 export class PaymentService {
@@ -27,7 +28,8 @@ export class PaymentService {
       msgId: entumovilDto.id,
       body: entumovilDto.mstext,
       phoneSender: entumovilDto.msisdn,
-      entumovilPhone: entumovilDto.sender
+      entumovilPhone: entumovilDto.sender,
+      createdAt: sub(new Date(), { hours: 4 })
     }));
     const smsBodyData = entumovilDto.mstext.split(' ');
     const application = smsBodyData.length > 1
@@ -48,7 +50,8 @@ export class PaymentService {
         clientAmount: totalAmount * PaymentValues.clientFee,
         platformAmount: totalAmount * PaymentValues.platformFee,
         via: PaymentVia.ENTUMOVIL,
-        userHash: crypto.createHash('sha1').update(entumovilDto.msisdn, 'utf-8').digest('hex')
+        userHash: crypto.createHash('sha1').update(entumovilDto.msisdn, 'utf-8').digest('hex'),
+        createdAt: sub(new Date(), { hours: 4 })
       }));
     }
   }
@@ -99,8 +102,8 @@ export class PaymentService {
           product: product,
           originalAmount: entumovilPayment.sender === PaymentValues.shortNumber4
             ? PaymentValues.shortNumber4Price : PaymentValues.shortNumber25Price,
-            totalAmount: totalAmount,
-            clientAmount: totalAmount * PaymentValues.clientFee,
+          totalAmount: totalAmount,
+          clientAmount: totalAmount * PaymentValues.clientFee,
           platformAmount: totalAmount * PaymentValues.platformFee,
           via: PaymentVia.ENTUMOVIL,
           userHash: crypto.createHash('sha1').update(entumovilPayment.msisdn, 'utf-8').digest('hex'),

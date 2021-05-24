@@ -20,7 +20,8 @@ async function bootstrap() {
   await minioConfig.createDefaultBucket();
   await minioConfig.setPublicPolicy();
 
-  const paymentService = app.get(PaymentService);
+  //const paymentService = app.get(PaymentService);
+  //await paymentService.loadData();
   //await paymentService.createPaymentsFromEntumovil();
 
   //Swagger setup
