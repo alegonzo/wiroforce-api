@@ -19,6 +19,7 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD }}
         script: |
           cd apps/wiroforce-api
+          docker-compose down
           rm * -R
 
     - name: Copy repository contents via scp

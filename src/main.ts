@@ -14,7 +14,8 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   const minioConfig = app.get(MinioClientService);
-  minioConfig.setPublicPolicy();
+  await minioConfig.createDefaultBucket();
+  await minioConfig.setPublicPolicy();
 
   const paymentService = app.get(PaymentService);
   //await paymentService.createPaymentsFromEntumovil();

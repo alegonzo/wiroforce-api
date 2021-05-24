@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import * as Minio from 'minio';
 
@@ -10,12 +10,19 @@ export class MinioClientService {
     constructor(private configService: ConfigService) {
         this.defaultBucket = this.configService.get<string>('DEFAULT_BUCKET');
         this.minioClient = new Minio.Client({
-            endPoint: this.configService.get<string>('MINIO_URL'),
-            port: parseInt(this.configService.get<string>('MINIO_PORT')),
+            endPoint: this.configService.get<string>('MINIO_HOST_URL'),
+            port: parseInt(this.configService.get<string>('MINIO_HOST_PORT')),
             useSSL: false,
             accessKey: this.configService.get<string>('MINIO_ACCESS_KEY'),
             secretKey: this.configService.get<string>('MINIO_SECRET_KEY')
         });
+    }
+
+    async createDefaultBucket() {
+        if (!await this.minioClient.bucketExists(this.defaultBucket)) {
+            await this.minioClient.makeBucket('mybucket', 'us-east-1');
+            Logger.warn('Bucket creado');
+        }
     }
 
     setPublicPolicy(): Promise<any> {

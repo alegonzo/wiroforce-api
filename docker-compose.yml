@@ -11,8 +11,10 @@ services:
        - DB_USERNAME=root
        - DB_PASSWORD=8*9klMy6!Lp023
        - DB_NAME=wiroforce
+       - MINIO_HOST_URL=minio
+       - MINIO_HOST_PORT=9000
        - MINIO_URL=conwiro.nat.cu
-       - MINIO_PORT=9010
+       - MINIO_PORT=9016
        - MINIO_ACCESS_KEY=admin775
        - MINIO_SECRET_KEY=Jo8Pm*gh
        - DEFAULT_BUCKET=wiro-force
@@ -32,5 +34,17 @@ services:
        - MYSQL_DATABASE=wiroforce
      ports:
        - 9015:3306
+   minio:
+     image: minio/minio:latest
+     restart: always
+     volumes:
+      - wiroforce-storage:/data
+     command: minio server /data
+     ports:
+       - 9016:9000
+     environment:
+       MINIO_ROOT_USER: admin775
+       MINIO_ROOT_PASSWORD: Jo8Pm*gh
 volumes:
   db_data: {}
+  wiroforce-storage:
