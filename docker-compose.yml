@@ -25,6 +25,7 @@ services:
      depends_on: 
        - db
        - minio
+
    db:
      image: mysql:5.7
      volumes:
@@ -35,6 +36,7 @@ services:
        - MYSQL_DATABASE=wiroforce
      ports:
        - 9015:3306
+
    minio:
      image: minio/minio:latest
      restart: always
@@ -46,6 +48,21 @@ services:
      environment:
        MINIO_ROOT_USER: admin775
        MINIO_ROOT_PASSWORD: Jo8Pm*gh
+
+   metabase:
+    image: metabase/metabase:v0.39.2
+    restart: always
+    ports:
+      - 9012:3000
+    volumes:
+      - metabase-data:/metabase-data
+
 volumes:
-  db_data: {}
+  db_data:
   wiroforce-storage:
+  metabase-data:
+
+networks: 
+  default: 
+    external: 
+      name: wiroforce    
