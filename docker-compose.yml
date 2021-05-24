@@ -24,6 +24,7 @@ services:
        - 9013:3000
      depends_on: 
        - db
+       - minio
    db:
      image: mysql:5.7
      volumes:

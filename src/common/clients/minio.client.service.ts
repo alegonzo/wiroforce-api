@@ -20,7 +20,7 @@ export class MinioClientService {
 
     async createDefaultBucket() {
         if (!await this.minioClient.bucketExists(this.defaultBucket)) {
-            await this.minioClient.makeBucket('mybucket', 'us-east-1');
+            await this.minioClient.makeBucket(this.defaultBucket, 'us-east-1');
             Logger.warn('Bucket creado');
         }
     }
