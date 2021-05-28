@@ -17,7 +17,7 @@ services:
        - MINIO_PORT=9016
        - MINIO_ACCESS_KEY=admin775
        - MINIO_SECRET_KEY=Jo8Pm*gh
-       - DEFAULT_BUCKET=wiro-force
+       - DEFAULT_BUCKET=wiroforce-storage
      build:
           context: .
      ports:
