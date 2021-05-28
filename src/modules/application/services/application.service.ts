@@ -57,8 +57,7 @@ export class ApplicationService {
   async findOneByAppId(appId: string): Promise<Application> {
     const application = await this.applicationRepository.findOne({ where: { appId: appId } });
     if (application) {
-      application.imageUrl = `http://${this.configService.get<string>('MINIO_URL')}` +
-        `:${this.configService.get<string>('MINIO_PORT')}` +
+      application.imageUrl = `https://${this.configService.get<string>('MINIO_URL')}` +
         `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
         `/${application.imageUrl}`;
     }
