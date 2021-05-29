@@ -24,6 +24,5 @@ export class UpdateProductDto {
 
     @ApiPropertyOptional()
     @IsOptional()
-    @IsBooleanString()
     active: boolean;
 }

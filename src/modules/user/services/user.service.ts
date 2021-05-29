@@ -25,9 +25,10 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    console.log(createUserDto);
     return this.userRepository.save({
       ...createUserDto,
-      profile: new Profile(createUserDto),
+      profile: new Profile({}),
       company: await this.companyService.create(createUserDto.company)
     });
   }
@@ -50,8 +51,14 @@ export class UserService {
     await this.userRepository.delete(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findOne(id, { relations: ['profile'] });
+    user.fullName = updateUserDto.fullName;
+    user.profile.address = updateUserDto.address;
+    user.profile.nitOnat = updateUserDto.nitOnat;
+    user.profile.phone = updateUserDto.phone;
+    user.profile.province = updateUserDto.province;
+    return this.userRepository.save(user);
   }
 
   remove(id: number) {

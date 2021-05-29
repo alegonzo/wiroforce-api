@@ -9,7 +9,7 @@ export class CompanyExistsRule implements ValidatorConstraintInterface {
 
     async validate(name: string) {
         try {
-            await this.companyService.findOneByName(name);
+            return await this.companyService.findOneByName(name) !== null;
         } catch (e) {
             return false;
         }
