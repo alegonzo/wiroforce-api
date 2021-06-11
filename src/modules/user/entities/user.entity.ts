@@ -42,7 +42,7 @@ export class User {
     enum: Role,
     default: Role.CLIENT,
   })
-  roles: Role[];
+  roles: Role;
 
   @Column()
   companyId: number;
