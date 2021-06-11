@@ -8,11 +8,9 @@ export class UserExistsRule implements ValidatorConstraintInterface {
     constructor(private userService: UserService) { }
 
     async validate(email: string) {
-        try {
-            await this.userService.findOneByEmail(email);
-        } catch (e) {
+        const user = await this.userService.findOneByEmail(email);
+        if (user)
             return false;
-        }
         return true;
     }
 

@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsNotEmpty, IsNumberString, IsString } from "class-validator";
-import { Role } from "../enums/role.enum";
 
 export class CreateMemberDto {
     @ApiProperty()
@@ -24,5 +23,4 @@ export class CreateMemberDto {
     @IsNumberString()
     companyId: number;
 
-    role: Role;
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UseGuards, Req, UseFilters, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UseGuards, Req, UseFilters, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApplicationService } from '../services/application.service';
 import { CreateApplicationDto } from '../dto/create-application.dto';
@@ -6,12 +6,14 @@ import { CreateApplicationDto } from '../dto/create-application.dto';
 import { Application } from '../entities/application.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { BaseExceptionFilter } from '@nestjs/core';
+import { Roles } from '../../auth/decorators/roles.decorator';
+import { Role } from '../../auth/enums/role.enum';
+import { RolesGuard } from '../../auth/guards/roles.guard';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })
 @ApiTags('Applications')
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('applications')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) { }
@@ -19,6 +21,7 @@ export class ApplicationController {
   @ApiCreatedResponse({ type: Application })
   @UseInterceptors(FileInterceptor('image'))
   @Post()
+  @Roles(Role.CLIENT)
   create(
     @Body() createApplicationDto: CreateApplicationDto,
     @UploadedFile() image: Express.Multer.File,
@@ -28,18 +31,21 @@ export class ApplicationController {
 
   @ApiOkResponse({ type: [Application] })
   @Get()
+  @Roles(Role.CLIENT, Role.ADMIN)
   findAll(@Req() req): Promise<Application[]> {
     return this.applicationService.findAll(req.user.company.id);
   }
 
   @ApiOkResponse({ type: Application })
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Application> {
-    return this.applicationService.findOneByAppId(id);
+  @Roles(Role.CLIENT)
+  async findOne(@Param('id') id: string, @Req() req): Promise<Application> {
+    const application = await this.applicationService.findOneByAppId(id);
+    if (application?.companyId !== req.user.company.id)
+      throw new ForbiddenException({
+        status: 401,
+        message: 'Forbidden'
+      });
+    return application;
   }
-
-  /*@Patch(':id')
-  update(@Param('id') id: string, @Body() updateApplicationDto: UpdateApplicationDto) {
-    return this.applicationService.update(+id, updateApplicationDto);
-  }*/
 }

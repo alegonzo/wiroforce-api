@@ -27,6 +27,7 @@ export class ApplicationService {
     let appStringId = Str(createApplicationDto.name).replaceAll("-", "").replaceAll(" ", "").replaceAll("", "").lower().get();
     let appId = companyName + "_" + appStringId;
     const checkApp = await this.applicationRepository.findOne({ where: { appId: appId } });
+    
     if (checkApp) {
       throw new BadRequestException({
         code: 400,

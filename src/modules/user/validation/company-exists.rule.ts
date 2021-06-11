@@ -8,11 +8,9 @@ export class CompanyExistsRule implements ValidatorConstraintInterface {
     constructor(private companyService: CompanyService) { }
 
     async validate(name: string) {
-        try {
-            return await this.companyService.findOneByName(name) !== null;
-        } catch (e) {
+        const company = await this.companyService.findOneByName(name);
+        if (company)
             return false;
-        }
         return true;
     }
 

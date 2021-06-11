@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CompanyService } from '../../company/services/company.service';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
+import { GetAllQueryDto } from '../dto/get-all-query.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Profile } from '../entities/profile.entity';
 import { User } from '../entities/user.entity';
@@ -16,7 +17,14 @@ export class UserService {
     private companyService: CompanyService
   ) { }
 
-  findOneByEmail(email: string): Promise<User> {
+  findAll(queryDto: GetAllQueryDto): Promise<User[]> {
+    return this.userRepository.find({
+      skip: queryDto.size * queryDto.page,
+      take: queryDto.size
+    });
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
     return this.userRepository.findOne({ where: { email: email }, relations: ['company'] });
   }
 
@@ -25,7 +33,6 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    console.log(createUserDto);
     return this.userRepository.save({
       ...createUserDto,
       profile: new Profile({}),
@@ -33,6 +40,21 @@ export class UserService {
     });
   }
 
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findOne(id, { relations: ['profile'] });
+    user.fullName = updateUserDto.fullName;
+    user.profile.address = updateUserDto.address;
+    user.profile.nitOnat = updateUserDto.nitOnat;
+    user.profile.phone = updateUserDto.phone;
+    user.profile.province = updateUserDto.province;
+    return this.userRepository.save(user);
+  }
+
+  async updateStatus(id: number): Promise<User> {
+    const user = await this.userRepository.findOne(id);
+    user.active = !user.active;
+    return this.userRepository.save(user);
+  }
 
   //Team members
 
@@ -49,16 +71,6 @@ export class UserService {
 
   async removeMember(id: number) {
     await this.userRepository.delete(id);
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.userRepository.findOne(id, { relations: ['profile'] });
-    user.fullName = updateUserDto.fullName;
-    user.profile.address = updateUserDto.address;
-    user.profile.nitOnat = updateUserDto.nitOnat;
-    user.profile.phone = updateUserDto.phone;
-    user.profile.province = updateUserDto.province;
-    return this.userRepository.save(user);
   }
 
   remove(id: number) {

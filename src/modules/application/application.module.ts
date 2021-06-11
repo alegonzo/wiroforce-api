@@ -9,7 +9,9 @@ import { CompanyModule } from '../company/company.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Application]), CompanyModule, ClientsModule],
   controllers: [ApplicationController],
-  providers: [ApplicationService],
+  providers: [
+    ApplicationService
+  ],
   exports: [ApplicationService]
 })
 export class ApplicationModule { }

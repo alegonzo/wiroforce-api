@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MinioClientService } from '../../../common/clients/minio.client.service';
@@ -16,8 +16,14 @@ export class ProductService {
     private minioClient: MinioClientService
   ) { }
 
-  async create(createProductDto: CreateProductDto, file: Express.Multer.File): Promise<Product> {
+  async create(createProductDto: CreateProductDto, file: Express.Multer.File, companyId: number): Promise<Product> {
     const application = await this.applicationService.findOneByAppId(createProductDto.appId);
+    if (application?.companyId !== companyId) {
+      throw new ForbiddenException({
+        status: 401,
+        message: 'Forbidden'
+      });
+    }
     const productCheck = await this.productRepository.findOne({
       where: {
         itemId: createProductDto.itemId,
@@ -44,8 +50,14 @@ export class ProductService {
     return this.productRepository.save(product);
   }
 
-  async findAll(appId: string): Promise<Product[]> {
+  async findAll(appId: string, companyId: number): Promise<Product[]> {
     const app = await this.applicationService.findOneByAppId(appId);
+    if (app?.companyId !== companyId) {
+      throw new ForbiddenException({
+        status: 401,
+        message: 'Forbidden'
+      });
+    }
     return this.productRepository.find({ where: { applicationId: app.id } });
   }
 
@@ -53,16 +65,36 @@ export class ProductService {
     return this.productRepository.find({ where: { applicationId: id } });
   }
 
-  findOne(id: number): Promise<Product> {
-    return this.productRepository.findOne(id);
+  async findOne(id: number, companyId: number): Promise<Product> {
+    const product = await this.productRepository.findOne(id, {
+      relations: ['application']
+    });
+    if (product?.application.companyId !== companyId) {
+      throw new ForbiddenException({
+        status: 401,
+        message: 'Forbidden'
+      });
+    }
+    return product;
   }
 
   findOneByItemId(itemId: string): Promise<Product> {
     return this.productRepository.findOne({ where: { itemId: itemId } });
   }
 
-  async update(id: number, updateProductDto: UpdateProductDto, file: Express.Multer.File): Promise<Product> {
-    const product = await this.productRepository.findOne(id);
+  async update(
+    id: number,
+    updateProductDto: UpdateProductDto,
+    file: Express.Multer.File,
+    companyId: number
+  ): Promise<Product> {
+    const product = await this.productRepository.findOne(id, { relations: ['application'] });
+    if (product?.application.companyId !== companyId) {
+      throw new ForbiddenException({
+        status: 401,
+        message: 'Forbidden'
+      });
+    }
     if (file)
       await this.minioClient.uploadFileBuffer(product.imageUrl, file.buffer);
     product.price = updateProductDto.price;

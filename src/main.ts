@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
+import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { MinioClientService } from './common/clients/minio.client.service';
 import { PaymentService } from './modules/payment/services/payment.service';
@@ -10,6 +11,7 @@ import { PaymentService } from './modules/payment/services/payment.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
+  app.use(helmet());
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api/v1');
   useContainer(app.select(AppModule), { fallbackOnErrors: true });

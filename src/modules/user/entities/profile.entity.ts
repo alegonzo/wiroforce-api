@@ -1,31 +1,31 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { Province } from "../enums/province.enum";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Province } from '../enums/province.enum';
 
 @Entity()
 export class Profile {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    phone: string;
+  @Column()
+  phone: string;
 
-    @Column()
-    address: string;
+  @Column()
+  address: string;
 
-    @Column()
-    license: string;
+  @Column()
+  license: string;
 
-    @Column()
-    nitOnat: string;
+  @Column()
+  nitOnat: string;
 
-    @Column({
-        type: 'enum',
-        enum: Province,
-        nullable: true
-    })
-    province: Province;
+  @Column({
+    type: 'enum',
+    enum: Province,
+    nullable: true,
+  })
+  province: Province;
 
-    constructor(partial: Partial<Profile>) {
-        Object.assign(this, partial);
-    }
+  constructor(partial: Partial<Profile>) {
+    Object.assign(this, partial);
+  }
 }
