@@ -30,16 +30,16 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  @Get(':id')
-  @Roles(Role.ADMIN)
-  findOne(@Param('id') id: string) {
-    return this.userService.findOneById(+id);
+  @Get('/profile')
+  @Roles(Role.ADMIN, Role.CLIENT)
+  findProfile(@Req() req) {
+    return this.userService.findOneById(req.user.id);
   }
 
-  @Put(':id')
-  @Roles(Role.ADMIN)
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Put('/editProfile')
+  @Roles(Role.ADMIN, Role.CLIENT)
+  update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(req.user.id, updateUserDto);
   }
 
   @Put(':id/updateStatus')
