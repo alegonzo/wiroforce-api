@@ -6,16 +6,16 @@ export class Profile {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: null })
   phone: string;
 
-  @Column()
+  @Column({ default: null })
   address: string;
 
-  @Column()
+  @Column({ default: null })
   license: string;
 
-  @Column()
+  @Column({ default: null })
   nitOnat: string;
 
   @Column({
