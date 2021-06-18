@@ -27,7 +27,7 @@ export class User {
   fullName: string;
 
   @Column({
-    default: true,
+    default: false,
   })
   active: boolean;
 
