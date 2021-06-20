@@ -1,4 +1,5 @@
 import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MinioClientService } from '../../../common/clients/minio.client.service';
@@ -13,7 +14,8 @@ export class ProductService {
     @InjectRepository(Product)
     private productRepository: Repository<Product>,
     private applicationService: ApplicationService,
-    private minioClient: MinioClientService
+    private minioClient: MinioClientService,
+    private configService: ConfigService
   ) { }
 
   async create(createProductDto: CreateProductDto, file: Express.Multer.File, companyId: number): Promise<Product> {
@@ -75,6 +77,10 @@ export class ProductService {
         message: 'Forbidden'
       });
     }
+    product.application = null;
+    product.imageUrl = `https://${this.configService.get<string>('MINIO_URL')}` +
+        `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
+        `/${product.imageUrl}`;
     return product;
   }
 
