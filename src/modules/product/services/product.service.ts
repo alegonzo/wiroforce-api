@@ -78,9 +78,11 @@ export class ProductService {
       });
     }
     product.application = null;
-    product.imageUrl = `https://${this.configService.get<string>('MINIO_URL')}` +
+    if (product.imageUrl) {
+      product.imageUrl = `https://${this.configService.get<string>('MINIO_URL')}` +
         `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
         `/${product.imageUrl}`;
+    }
     return product;
   }
 
