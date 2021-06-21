@@ -19,6 +19,7 @@ export class UserService {
 
   findAll(queryDto: GetAllQueryDto): Promise<User[]> {
     return this.userRepository.find({
+      relations: ['profile'],
       skip: queryDto.size * queryDto.page,
       take: queryDto.size
     });
