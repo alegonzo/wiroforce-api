@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/services/user.service';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
+import { CreateAdminDto } from '../../user/dto/create-admin.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,9 +14,7 @@ export class AuthService {
 
     async validateUser(email: string, pass: string) {
         const user = await this.userService.findOneByEmail(email);
-        if (!user)
-            return null;
-        if (!user.active)
+        if (!user?.active)
             return null;
         const match = await this.comparePassword(pass, user.password);
         if (!match)
@@ -34,6 +33,14 @@ export class AuthService {
     public async create(user: CreateUserDto) {
         const pass = await this.hashPassword(user.password);
         const newUser = await this.userService.create({ ...user, password: pass });
+        const { password, profile, companyId, createdAt, active, updatedAt, ...result } = newUser;
+        const token = await this.generateToken(result);
+        return { user: result, token };
+    }
+
+    public async createAdmin(user: CreateAdminDto) {
+        const pass = await this.hashPassword(user.password);
+        const newUser = await this.userService.createAdmin({ ...user, password: pass });
         const { password, profile, companyId, createdAt, active, updatedAt, ...result } = newUser;
         const token = await this.generateToken(result);
         return { user: result, token };

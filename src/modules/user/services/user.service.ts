@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Role } from '../../auth/enums/role.enum';
+import { AuthService } from '../../auth/services/auth.service';
 import { CompanyService } from '../../company/services/company.service';
+import { CreateAdminDto } from '../dto/create-admin.dto';
 import { CreateMemberDto } from '../dto/create-member.dto';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { GetAllQueryDto } from '../dto/get-all-query.dto';
@@ -19,7 +22,7 @@ export class UserService {
 
   findAll(queryDto: GetAllQueryDto): Promise<User[]> {
     return this.userRepository.find({
-      relations: ['profile'],
+      relations: ['profile', 'company'],
       skip: queryDto.size * queryDto.page,
       take: queryDto.size
     });
@@ -76,5 +79,16 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  //Admin
+  async createAdmin(body: CreateAdminDto) {
+    return this.userRepository.save({
+      ...body,
+      roles: Role.ADMIN,
+      active: true,
+      profile: null,
+      company: null
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -9,10 +9,12 @@ import { Roles } from '../../auth/decorators/roles.decorator';
 import { Role } from '../../auth/enums/role.enum';
 import { GetAllQueryDto } from '../dto/get-all-query.dto';
 import { User } from '../entities/user.entity';
+import { CreateAdminDto } from '../dto/create-admin.dto';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })
 @UseGuards(JwtAuthGuard, RolesGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
@@ -47,4 +49,5 @@ export class UserController {
   updateStatus(@Param('id') id: string) {
     return this.userService.updateStatus(+id);
   }
+
 }

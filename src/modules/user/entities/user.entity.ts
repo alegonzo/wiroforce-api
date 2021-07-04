@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
@@ -20,6 +21,7 @@ export class User {
   @Column()
   email: string;
 
+  @Exclude()
   @Column()
   password: string;
 
@@ -44,14 +46,19 @@ export class User {
   })
   roles: Role;
 
-  @Column()
+  @Column({
+    nullable: true
+  })
   companyId: number;
 
-  @ManyToOne(() => Company, (company) => company.users)
+  @ManyToOne(() => Company, (company) => company.users, {
+    nullable: true
+  })
   company: Company;
 
   @OneToOne(() => Profile, {
     cascade: true,
+    nullable: true
   })
   @JoinColumn()
   profile: Profile;
