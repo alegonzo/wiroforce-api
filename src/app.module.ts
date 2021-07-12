@@ -11,6 +11,7 @@ import { MobileModule } from './modules/mobile/mobile.module';
 import { CompanyModule } from './modules/company/company.module';
 import { ClientsModule } from './common/clients/clients.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { HealthCheckModule } from './modules/health-check/health-check.module';
 
 @Module({
     imports: [
@@ -46,6 +47,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
         MobileModule,
         CompanyModule,
         ClientsModule,
+        HealthCheckModule,
     ],
 })
 export class AppModule { }
