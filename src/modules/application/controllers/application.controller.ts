@@ -9,11 +9,13 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse,
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { Role } from '../../auth/enums/role.enum';
 import { RolesGuard } from '../../auth/guards/roles.guard';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })
 @ApiTags('Applications')
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, ThrottlerGuard)
+@Throttle(120, 60)
 @Controller('applications')
 export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) { }

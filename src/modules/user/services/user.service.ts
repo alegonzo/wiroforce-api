@@ -60,6 +60,10 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  saveUser(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
+
   //Team members
 
   findMembers(companyId: number): Promise<User[]> {

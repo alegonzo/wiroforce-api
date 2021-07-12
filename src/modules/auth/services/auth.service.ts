@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/services/user.service';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
 import { CreateAdminDto } from '../../user/dto/create-admin.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +47,19 @@ export class AuthService {
         return { user: result, token };
     }
 
+    public async changePassword(email: string, body: ChangePasswordDto) {
+        const user = await this.userService.findOneByEmail(email);
+        const match = await this.comparePassword(body.oldPassword, user?.password);
+        if (!match) {
+            throw new BadRequestException({ message: ['La contraseña actual no es correcta'] });
+        }
+        else {
+            user.password = await this.hashPassword(body.newPassword);
+        }
+        await this.userService.saveUser(user);
+        return { message: 'Contraseña cambiada correctamente' };
+    }
+
     private async generateToken(user) {
         const token = await this.jwtService.signAsync(user);
         return token;
@@ -60,4 +74,5 @@ export class AuthService {
         const match = await bcrypt.compare(enteredPassword, dbPassword);
         return match;
     }
+
 }

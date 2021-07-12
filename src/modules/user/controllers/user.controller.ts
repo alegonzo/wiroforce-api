@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Put, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Req, Put, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -10,10 +10,12 @@ import { Role } from '../../auth/enums/role.enum';
 import { GetAllQueryDto } from '../dto/get-all-query.dto';
 import { User } from '../entities/user.entity';
 import { CreateAdminDto } from '../dto/create-admin.dto';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAuthGuard, RolesGuard, ThrottlerGuard)
+@Throttle(120, 60)
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags('Users')
 @Controller('users')

@@ -1,12 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { MinioClientService } from './common/clients/minio.client.service';
-import { PaymentService } from './modules/payment/services/payment.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -27,13 +25,12 @@ async function bootstrap() {
   //await paymentService.createPaymentsFromEntumovil();
 
   //Swagger setup
-  const options = new DocumentBuilder()
+  /*const options = new DocumentBuilder()
     .setTitle('Wiro Force Api')
-    //.setDescription('The cats API description')
     .setVersion('0.1')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('swagger', app, document);*/
 
 
   await app.listen(configService.get<number>('APP_PORT'));

@@ -63,8 +63,16 @@ export class ProductService {
     return this.productRepository.find({ where: { applicationId: app.id } });
   }
 
-  findAllMobile(id: number): Promise<Product[]> {
-    return this.productRepository.find({ where: { applicationId: id } });
+  async findAllMobile(id: number): Promise<Product[]> {
+    const products = await this.productRepository.find({ where: { applicationId: id } });
+    return products.map(item => {
+      if (item.imageUrl) {
+        item.imageUrl = `https://${this.configService.get<string>('MINIO_URL')}` +
+          `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
+          `/${item.imageUrl}`
+      }
+      return item;
+    })
   }
 
   async findOne(id: number, companyId: number): Promise<Product> {
