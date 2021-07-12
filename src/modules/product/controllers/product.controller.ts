@@ -9,13 +9,12 @@ import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse,
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { Role } from '../../auth/enums/role.enum';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden exception' })
 @ApiTags('In-App-Purchase Products')
 @UseGuards(JwtAuthGuard, RolesGuard, ThrottlerGuard)
-@Throttle(120, 60)
 @Controller('products')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }

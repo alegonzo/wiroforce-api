@@ -1,6 +1,6 @@
 import { Controller, Body, Post, UseGuards, Request, UseInterceptors, ClassSerializerInterceptor, Put, Req } from '@nestjs/common';
 import { ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerGuard } from '@nestjs/throttler';
 import { CreateAdminDto } from '../../user/dto/create-admin.dto';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
 import { Roles } from '../decorators/roles.decorator';
@@ -13,7 +13,6 @@ import { AuthService } from '../services/auth.service';
 
 @ApiTags('Authentication')
 @UseGuards(ThrottlerGuard)
-@Throttle(120, 60)
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {

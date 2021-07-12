@@ -10,17 +10,13 @@ import { PaymentModule } from './modules/payment/payment.module';
 import { MobileModule } from './modules/mobile/mobile.module';
 import { CompanyModule } from './modules/company/company.module';
 import { ClientsModule } from './common/clients/clients.module';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
     imports: [
         ThrottlerModule.forRoot({
-            ttl: 10,
-            limit: 1,
-            ignoreUserAgents: [
-                /googlebot/gi,
-            ]
+            ttl: 60,
+            limit: 120,
         }),
         ConfigModule.forRoot({
             isGlobal: true
