@@ -111,8 +111,10 @@ export class ProductService {
         message: 'Forbidden'
       });
     }
-    if (file)
+    if (file) {
+      product.imageUrl = `products/${product.application.appId}/${product.itemId}.png`
       await this.minioClient.uploadFileBuffer(product.imageUrl, file.buffer);
+    }
     product.price = updateProductDto.price;
     product.description = updateProductDto.description;
     product.resourceAmount = updateProductDto.resourceAmount;
