@@ -12,7 +12,10 @@ export class MobileController {
     ) { }
 
     @Get('products')
-    getProducts(@Req() req) {
-        return this.productService.findAllMobile(req.application.id);
+    async getProducts(@Req() req) {
+        const products = await this.productService.findAllMobile(req.application.id);
+        return {
+            iapProducts: products
+        };
     }
 }
