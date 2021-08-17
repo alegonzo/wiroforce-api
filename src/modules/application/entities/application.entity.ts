@@ -4,10 +4,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -60,7 +58,7 @@ export class Application {
   @ManyToOne(() => Company, (company) => company.applications)
   company: Company;
 
-  @OneToMany((type) => Product, (product) => product.application)
+  @OneToMany(() => Product, (product) => product.application)
   products: Product[];
 
   constructor(partial: Partial<Application>) {

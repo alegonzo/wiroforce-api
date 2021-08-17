@@ -69,7 +69,6 @@ export class UserService {
     const user = await this.userRepository.findOne(id, {
       relations: ['profile'],
     });
-    user.fullName = updateUserDto.fullName;
     user.profile.address = updateUserDto.address;
     user.profile.nitOnat = updateUserDto.nitOnat;
     user.profile.phone = updateUserDto.phone;

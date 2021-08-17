@@ -2,13 +2,11 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
-  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { MinioClientService } from '../../../common/clients/minio.client.service';
 import { CreateApplicationDto } from '../dto/create-application.dto';
-import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { QueryAllApplicationDto } from '../dto/query-all-application.dto';
 import { Application } from '../entities/application.entity';
 import * as Str from '@supercharge/strings';
