@@ -7,11 +7,13 @@ import { ClientsModule } from '../../common/clients/clients.module';
 import { CompanyModule } from '../company/company.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Application]), CompanyModule, ClientsModule],
-  controllers: [ApplicationController],
-  providers: [
-    ApplicationService
+  imports: [
+    TypeOrmModule.forFeature([Application]),
+    CompanyModule,
+    ClientsModule,
   ],
-  exports: [ApplicationService]
+  controllers: [ApplicationController],
+  providers: [ApplicationService],
+  exports: [ApplicationService],
 })
-export class ApplicationModule { }
+export class ApplicationModule {}

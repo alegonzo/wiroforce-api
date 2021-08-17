@@ -6,19 +6,21 @@ import { jwtConstants } from '../constants';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(private readonly userService: UserService) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: jwtConstants.secret,
-        });
-    }
+  constructor(private readonly userService: UserService) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: jwtConstants.secret,
+    });
+  }
 
-    async validate(payload: any) {
-        const user = await this.userService.findOneById(payload.id);
-        if (!user) {
-            throw new UnauthorizedException('You are not authorized to perform the operation');
-        }
-        return payload;
+  async validate(payload: any) {
+    const user = await this.userService.findOneById(payload.id);
+    if (!user || !user.active) {
+      throw new UnauthorizedException(
+        'You are not authorized to perform the operation',
+      );
     }
+    return payload;
+  }
 }

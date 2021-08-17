@@ -12,6 +12,7 @@ import { CompanyModule } from './modules/company/company.module';
 import { ClientsModule } from './common/clients/clients.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthCheckModule } from './modules/health-check/health-check.module';
+import { MailModule } from './modules/mail/mail.module';
 
 @Module({
     imports: [
@@ -48,6 +49,7 @@ import { HealthCheckModule } from './modules/health-check/health-check.module';
         CompanyModule,
         ClientsModule,
         HealthCheckModule,
+        MailModule,
     ],
 })
 export class AppModule { }

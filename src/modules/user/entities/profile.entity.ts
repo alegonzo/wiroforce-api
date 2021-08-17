@@ -18,6 +18,9 @@ export class Profile {
   @Column({ default: null })
   nitOnat: string;
 
+  @Column({ default: null })
+  bankCard: string;
+
   @Column({
     type: 'enum',
     enum: Province,

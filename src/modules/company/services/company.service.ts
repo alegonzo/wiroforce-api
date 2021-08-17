@@ -5,21 +5,24 @@ import { Company } from '../entities/company.entity';
 
 @Injectable()
 export class CompanyService {
-    constructor(
-        @InjectRepository(Company)
-        private companyRepository: Repository<Company>
-    ) { }
+  constructor(
+    @InjectRepository(Company)
+    private companyRepository: Repository<Company>,
+  ) {}
 
-    findOne(id: number): Promise<Company> {
-        return this.companyRepository.findOne(id);
-    }
+  findAll(): Promise<Company[]> {
+    return this.companyRepository.find();
+  }
 
-    findOneByName(name: string): Promise<Company> {
-        return this.companyRepository.findOne({ where: { name: name } });
-    }
+  findOne(id: number): Promise<Company> {
+    return this.companyRepository.findOne(id);
+  }
 
-    create(name: string): Promise<Company> {
-        return this.companyRepository.save(new Company({ name }));
-    }
+  findOneByName(name: string): Promise<Company> {
+    return this.companyRepository.findOne({ where: { name: name } });
+  }
 
+  create(name: string): Promise<Company> {
+    return this.companyRepository.save(new Company({ name }));
+  }
 }

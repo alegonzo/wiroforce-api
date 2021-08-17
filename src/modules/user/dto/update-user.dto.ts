@@ -34,4 +34,10 @@ export class UpdateUserDto {
     @IsString()
     nitOnat: string;
 
+    @ApiProperty()
+    @IsOptional()
+    @IsNotEmpty()
+    @IsString()
+    bankCard: string;
+
 }

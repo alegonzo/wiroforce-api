@@ -4,7 +4,7 @@ services:
      image: wiroforce-api
      restart: always
      environment:
-       - JWT_SECRET=12345678 
+       - JWT_SECRET=5412e42ad84cba4784c4f1be611515311605f9c2 
        - APP_PORT=3000
        - DB_HOST=db
        - DB_PORT=3306
@@ -18,6 +18,10 @@ services:
        - MINIO_ACCESS_KEY=admin775
        - MINIO_SECRET_KEY=Jo8Pm*gh
        - DEFAULT_BUCKET=wiroforce-storage
+       - MAIL_SERVICE=gmail
+       - MAIL_USER=wiroforce@gmail.com
+       - MAIL_PASSWORD=Wir0F0rce.2021
+       - MAIL_FROM=wiroforce@gmail.com
      build:
           context: .
      ports:

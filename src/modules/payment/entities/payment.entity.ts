@@ -15,13 +15,7 @@ export class Payment {
     originalAmount: number;
 
     @Column({ type: 'float' })
-    totalAmount: number;
-
-    @Column({ type: 'float' })
     clientAmount: number;
-
-    @Column({ type: 'float' })
-    platformAmount: number;
 
     @Column({ nullable: true })
     channel: string;

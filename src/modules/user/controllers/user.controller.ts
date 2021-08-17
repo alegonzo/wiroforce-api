@@ -7,9 +7,10 @@ import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { Role } from '../../auth/enums/role.enum';
-import { GetAllQueryDto } from '../dto/get-all-query.dto';
+import { GetAllUsersQueryDto } from '../dto/get-all-users-query.dto';
 import { User } from '../entities/user.entity';
 import { ThrottlerGuard } from '@nestjs/throttler';
+import { PaginatedResponseDto } from '../../../common/dto/paginated-response.dto';
 
 @ApiBearerAuth()
 @ApiForbiddenResponse({ description: 'Forbidden Exception' })
@@ -22,7 +23,7 @@ export class UserController {
 
   @Get()
   @Roles(Role.ADMIN)
-  findAll(@Query() queryDto: GetAllQueryDto): Promise<User[]> {
+  findAll(@Query() queryDto: GetAllUsersQueryDto): Promise<PaginatedResponseDto> {
     return this.userService.findAll(queryDto);
   }
 
