@@ -80,13 +80,13 @@ export class UserService {
   async updateStatus(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
     user.active = !user.active;
-    /*await this.mailService.sendEmail(
+    await this.mailService.sendEmail(
       user,
       'Cambio en su cuenta de WiroForce',
       user.active
         ? 'Su cuenta ha sido activada'
         : 'Su cuenta ha sido desactivada',
-    );*/
+    );
     return this.userRepository.save(user);
   }
 

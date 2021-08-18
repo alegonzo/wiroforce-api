@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { type } from 'os';
 import {
   Column,
   CreateDateColumn,

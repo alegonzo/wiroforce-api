@@ -1,7 +1,51 @@
-<p>Hey {{ name }},</p>
-<p>Please click below to confirm your email</p>
-<p>
-    {{ info }}
-</p>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-<p>If you did not request this email you can safely ignore it.</p>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?= Yii::$app->charset ?>" />
+    <title></title>
+    <style>
+        .background {
+            background: linear-gradient(135deg, rgba(11, 3, 42, 1) 0%, rgba(118, 38, 45, 1) 100%);
+            padding: 15px;
+
+        }
+
+        .container {
+            color: white;
+            border: 2px solid rgba(255, 143, 33, 1);
+            border-radius: 14px;
+            padding: 15px;
+        }
+
+        .orange {
+            color: rgba(255, 143, 33, 1);
+        }
+
+        .diplay-block {
+            display: block;
+        }
+
+        p {
+            margin-bottom: 2px;
+            margin-top: 2px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="background">
+    <div class="container">
+        <p>Hola {{ name }},</p>
+        <p>
+            {{ info }}
+        </p>
+    </div>
+    <p>If you did not request this email you can safely ignore it.</p>
+    <p style="margin-top: 30px; text-align: center; color: rgb(3, 188, 230);">Copyright &copy;
+        All rights reserved | Made by ConWiro
+    </p>
+
+</body>
+
+</html>
