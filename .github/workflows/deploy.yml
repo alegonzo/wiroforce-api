@@ -5,41 +5,13 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux]
 
     steps:
-    - uses: actions/checkout@v1
-
-    - name: Prepare
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-        script: |
-          cd apps/wiroforce-api
-          docker-compose down
-          rm * -R
-
-    - name: Copy repository contents via scp
-      uses: appleboy/scp-action@master
-      env:
-        HOST: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-      with:
-        source: "."
-        target: "/home/cloud/apps/wiroforce-api"
-
-    - name: Executing remote command
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        USERNAME: ${{ secrets.USERNAME }}
-        PORT: ${{ secrets.PORT }}
-        PASSWORD: ${{ secrets.PASSWORD }}
-        script: |
-          cd apps/wiroforce-api
-          docker-compose up --build -d
+     - uses: actions/checkout@v2
+     - name: Despliegue
+       id: step_1
+       
+       run: |
+        docker-compose down
+        docker-compose up --build -d
