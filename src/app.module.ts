@@ -15,41 +15,39 @@ import { HealthCheckModule } from './modules/health-check/health-check.module';
 import { MailModule } from './modules/mail/mail.module';
 
 @Module({
-    imports: [
-        ThrottlerModule.forRoot({
-            ttl: 60,
-            limit: 120,
-        }),
-        ConfigModule.forRoot({
-            isGlobal: true
-        }),
-        TypeOrmModule.forRootAsync({
-            imports: [ConfigModule],
-            useFactory: (configService: ConfigService) => ({
-                type: "mysql",
-                host: configService.get<string>('DB_HOST'),
-                port: configService.get<number>('DB_PORT'),
-                username: configService.get<string>('DB_USER') || "",
-                password: configService.get<string>('DB_PASSWORD') || "",
-                database: configService.get<string>('DB_NAME'),
-                entities: [
-                    "dist/**/*.entity{.ts,.js}"
-                ],
-                synchronize: true
-            }),
-            inject: [ConfigService]
-        }),
-        MulterModule.register(),
-        UserModule,
-        ProductModule,
-        ApplicationModule,
-        AuthModule,
-        PaymentModule,
-        MobileModule,
-        CompanyModule,
-        ClientsModule,
-        HealthCheckModule,
-        MailModule,
-    ],
+  imports: [
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 120,
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USER') || '',
+        password: configService.get<string>('DB_PASSWORD') || '',
+        database: configService.get<string>('DB_NAME'),
+        entities: ['dist/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
+    MulterModule.register(),
+    UserModule,
+    ProductModule,
+    ApplicationModule,
+    AuthModule,
+    PaymentModule,
+    MobileModule,
+    CompanyModule,
+    ClientsModule,
+    HealthCheckModule,
+    MailModule,
+  ],
 })
-export class AppModule { }
+export class AppModule {}
