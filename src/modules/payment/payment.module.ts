@@ -9,14 +9,12 @@ import { EntumovilPayment } from './entities/entumovil-payment.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      Payment,
-      EntumovilPayment
-    ]),
+    TypeOrmModule.forFeature([Payment, EntumovilPayment]),
     ApplicationModule,
     ProductModule,
-    HttpModule],
+    HttpModule,
+  ],
   controllers: [PaymentController],
-  providers: [PaymentService]
+  providers: [PaymentService],
 })
-export class PaymentModule { }
+export class PaymentModule {}

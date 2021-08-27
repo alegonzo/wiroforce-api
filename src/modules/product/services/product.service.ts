@@ -21,7 +21,6 @@ export class ProductService {
     private productRepository: Repository<Product>,
     private applicationService: ApplicationService,
     private minioClient: MinioClientService,
-    private configService: ConfigService,
   ) {}
 
   async create(
@@ -104,10 +103,9 @@ export class ProductService {
     });
     return products.map((item) => {
       if (item.imageUrl) {
-        item.imageUrl =
-          `https://${this.configService.get<string>('MINIO_URL')}` +
-          `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
-          `/${item.imageUrl}`;
+        item.imageUrl = this.minioClient.buildMinioFilesPublicUrl(
+          item.imageUrl,
+        );
       }
       return item;
     });
@@ -125,10 +123,9 @@ export class ProductService {
     }
     product.application = null;
     if (product.imageUrl) {
-      product.imageUrl =
-        `https://${this.configService.get<string>('MINIO_URL')}` +
-        `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
-        `/${product.imageUrl}`;
+      product.imageUrl = this.minioClient.buildMinioFilesPublicUrl(
+        product.imageUrl,
+      );
     }
     return product;
   }

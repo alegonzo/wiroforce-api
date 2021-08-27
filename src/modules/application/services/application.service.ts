@@ -12,7 +12,6 @@ import { Application } from '../entities/application.entity';
 import * as Str from '@supercharge/strings';
 import { CompanyService } from '../../company/services/company.service';
 import { Company } from '../../company/entities/company.entity';
-import { ConfigService } from '@nestjs/config';
 import { PaginatedResponseDto } from '../../../common/dto/paginated-response.dto';
 
 @Injectable()
@@ -22,14 +21,38 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
     private companyService: CompanyService,
     private minioClient: MinioClientService,
-    private configService: ConfigService,
   ) {}
 
   async create(
     createApplicationDto: CreateApplicationDto,
-    file: Express.Multer.File,
+    files: {
+      image?: Express.Multer.File[];
+      receipt?: Express.Multer.File[];
+    },
     company: Company,
   ): Promise<Application> {
+    const appsCount = await this.applicationRepository.findAndCount({
+      where: {
+        active: true,
+        companyId: company.id,
+      },
+    });
+    console.log(appsCount);
+    const isPaid = appsCount[1] >= 2 && company.name !== 'Conwiro';
+
+    if (isPaid && !files.receipt) {
+      throw new BadRequestException({
+        code: 400,
+        message: 'Debe subir el recibo de pago',
+      });
+    }
+    if (!files.image) {
+      throw new BadRequestException({
+        code: 400,
+        message: 'Debe subir el icono de la aplicación',
+      });
+    }
+
     let token = Str.random();
     token = Str(token).replaceAll('-', '').get();
     const companyName = Str(company.name)
@@ -59,12 +82,23 @@ export class ApplicationService {
       name: createApplicationDto.name,
       token: token,
       appId: appId,
+      paid: isPaid,
       company: await this.companyService.findOne(company.id),
       imageUrl: `apps/${appId}.png`,
-      active: true,
+      receiptUrl: isPaid ? `apps/${appId}_receipt.png` : null,
+      active: isPaid ? false : true,
     });
 
-    await this.minioClient.uploadFileBuffer(application.imageUrl, file.buffer);
+    await this.minioClient.uploadFileBuffer(
+      application.imageUrl,
+      files.image[0].buffer,
+    );
+    if (isPaid) {
+      await this.minioClient.uploadFileBufferToSecret(
+        application.receiptUrl,
+        files.receipt[0].buffer,
+      );
+    }
     return this.applicationRepository.save(application);
   }
 
@@ -105,10 +139,9 @@ export class ApplicationService {
       where: { appId: appId },
     });
     if (application) {
-      application.imageUrl =
-        `https://${this.configService.get<string>('MINIO_URL')}` +
-        `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
-        `/${application.imageUrl}`;
+      application.imageUrl = this.minioClient.buildMinioFilesPublicUrl(
+        application.imageUrl,
+      );
     }
     return application;
   }
@@ -130,5 +163,10 @@ export class ApplicationService {
     }
     application.active = !application.active;
     return this.applicationRepository.save(application);
+  }
+
+  async downloadReceiptImage(appId: number) {
+    const app = await this.applicationRepository.findOne(appId);
+    return this.minioClient.downloadFileFromSecret(app.receiptUrl);
   }
 }

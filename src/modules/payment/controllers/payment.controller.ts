@@ -7,11 +7,11 @@ import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 @Throttle(1000, 60)
 @Controller('payments')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) { }
+  constructor(private readonly paymentService: PaymentService) {}
 
   @Post('entumovil')
   async entumovilPayment(@Body() entumovilDto: EntumovilDto) {
     await this.paymentService.saveEntumovilPayment(entumovilDto);
-    return { status: 200, message: "Pago registrado correctamente" };
+    return { status: 200, message: 'Pago registrado correctamente' };
   }
 }

@@ -1,3 +1,3 @@
 export enum PaymentVia {
-    ENTUMOVIL = "entumovil"
+  ENTUMOVIL = 'entumovil',
 }

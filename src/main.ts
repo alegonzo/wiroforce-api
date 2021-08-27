@@ -18,6 +18,7 @@ async function bootstrap() {
 
   const minioConfig = app.get(MinioClientService);
   await minioConfig.createDefaultBucket();
+  await minioConfig.createSecretBucket();
   await minioConfig.setPublicPolicy();
 
   //const paymentService = app.get(PaymentService);
@@ -31,7 +32,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);*/
-
 
   await app.listen(configService.get<number>('APP_PORT'));
 }

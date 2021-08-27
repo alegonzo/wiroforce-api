@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Req, Put, Query, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+  Put,
+  Query,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -19,11 +31,13 @@ import { PaginatedResponseDto } from '../../../common/dto/paginated-response.dto
 @ApiTags('Users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   @Roles(Role.ADMIN)
-  findAll(@Query() queryDto: GetAllUsersQueryDto): Promise<PaginatedResponseDto> {
+  findAll(
+    @Query() queryDto: GetAllUsersQueryDto,
+  ): Promise<PaginatedResponseDto> {
     return this.userService.findAll(queryDto);
   }
 
@@ -50,5 +64,4 @@ export class UserController {
   updateStatus(@Param('id') id: string) {
     return this.userService.updateStatus(+id);
   }
-
 }

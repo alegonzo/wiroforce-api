@@ -1,4 +1,5 @@
 export const SPECIAL_CHARS_REGEXP = /^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/;
+export const SPECIAL_CHARS_REGEXP_NO_SPACE = /^[A-Za-z0-9]*$/;
 export const PHONE_REGEXP = /^[0-9]{8}$/;
 export const BANK_CARD_REGEXP = /^[0-9]{16}$/;
 export const PROVINCES = [

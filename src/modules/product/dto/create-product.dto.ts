@@ -8,7 +8,10 @@ import {
   Matches,
   MaxLength,
 } from 'class-validator';
-import { SPECIAL_CHARS_REGEXP } from '../../../common/utils/constants';
+import {
+  SPECIAL_CHARS_REGEXP,
+  SPECIAL_CHARS_REGEXP_NO_SPACE,
+} from '../../../common/utils/constants';
 
 export class CreateProductDto {
   @ApiProperty()
@@ -21,7 +24,7 @@ export class CreateProductDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  @Matches(SPECIAL_CHARS_REGEXP)
+  @Matches(SPECIAL_CHARS_REGEXP_NO_SPACE)
   @MaxLength(10)
   itemId: string;
 

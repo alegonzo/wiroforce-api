@@ -7,15 +7,15 @@ import { ProductService } from '../../product/services/product.service';
 @ApiTags('Mobile Integration')
 @Controller('mobile')
 export class MobileController {
-    constructor(
-        private productService: ProductService
-    ) { }
+  constructor(private productService: ProductService) {}
 
-    @Get('products')
-    async getProducts(@Req() req) {
-        const products = await this.productService.findAllMobile(req.application.id);
-        return {
-            iapProducts: products
-        };
-    }
+  @Get('products')
+  async getProducts(@Req() req) {
+    const products = await this.productService.findAllMobile(
+      req.application.id,
+    );
+    return {
+      iapProducts: products,
+    };
+  }
 }

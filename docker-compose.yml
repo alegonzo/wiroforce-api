@@ -18,6 +18,7 @@ services:
        - MINIO_ACCESS_KEY=admin775
        - MINIO_SECRET_KEY=Jo8Pm*gh
        - DEFAULT_BUCKET=wiroforce-storage
+       - SECRET_BUCKET=wiro-force-secret
        - MAIL_SERVICE=gmail
        - MAIL_USER=wiroforce@gmail.com
        - MAIL_PASSWORD=Wir0F0rce.2021

@@ -1,7 +1,7 @@
 export class EntumovilDto {
-    id: string;
-    msisdn: string;
-    mstext: string;
-    sender: string;
-    createdAt: Date;
+  id: string;
+  msisdn: string;
+  mstext: string;
+  sender: string;
+  createdAt: Date;
 }

@@ -47,18 +47,18 @@ export class User {
   roles: Role;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   companyId: number;
 
   @ManyToOne(() => Company, (company) => company.users, {
-    nullable: true
+    nullable: true,
   })
   company: Company;
 
   @OneToOne(() => Profile, {
     cascade: true,
-    nullable: true
+    nullable: true,
   })
   @JoinColumn()
   profile: Profile;

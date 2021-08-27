@@ -8,16 +8,18 @@ import {
   UploadedFile,
   UseGuards,
   Req,
-  UseFilters,
-  BadRequestException,
   ForbiddenException,
   Query,
   Put,
+  UploadedFiles,
+  Res,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FileInterceptor,
+} from '@nestjs/platform-express';
 import { ApplicationService } from '../services/application.service';
 import { CreateApplicationDto } from '../dto/create-application.dto';
-//import { UpdateApplicationDto } from '../dto/update-application.dto';
 import { Application } from '../entities/application.entity';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import {
@@ -42,17 +44,30 @@ export class ApplicationController {
   constructor(private readonly applicationService: ApplicationService) {}
 
   @ApiCreatedResponse({ type: Application })
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'image', maxCount: 1 },
+        { name: 'receipt', maxCount: 1 },
+      ],
+      {
+        limits: {
+          fieldSize: 10485760,
+        },
+      },
+    ),
+  )
   @Post()
   @Roles(Role.CLIENT)
   create(
     @Body() createApplicationDto: CreateApplicationDto,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFiles()
+    files,
     @Req() req,
   ) {
     return this.applicationService.create(
       createApplicationDto,
-      image,
+      files,
       req.user.company,
     );
   }
@@ -86,5 +101,12 @@ export class ApplicationController {
   @Roles(Role.CLIENT, Role.ADMIN)
   updateStatus(@Param('id') id: number, @Req() req): Promise<Application> {
     return this.applicationService.updateStatus(id, req);
+  }
+
+  @ApiOkResponse()
+  @Get(':id/receipt')
+  @Roles(Role.ADMIN)
+  async findOneReceipt(@Param('id') id: number, @Res() res): Promise<any> {
+    return (await this.applicationService.downloadReceiptImage(id)).pipe(res);
   }
 }

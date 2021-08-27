@@ -42,7 +42,13 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @ApiCreatedResponse({ type: Product })
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: {
+        fileSize: 300000,
+      },
+    }),
+  )
   @Post()
   @Roles(Role.CLIENT)
   create(
@@ -78,7 +84,13 @@ export class ProductController {
 
   @ApiParam({ name: 'id' })
   @ApiOkResponse({ type: Product })
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: {
+        fileSize: 300000,
+      },
+    }),
+  )
   @Put(':id')
   @Roles(Role.CLIENT)
   update(

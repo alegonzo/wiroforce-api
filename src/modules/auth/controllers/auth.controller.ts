@@ -1,5 +1,21 @@
-import { Controller, Body, Post, UseGuards, Request, UseInterceptors, ClassSerializerInterceptor, Put, Req } from '@nestjs/common';
-import { ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Controller,
+  Body,
+  Post,
+  UseGuards,
+  Request,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Put,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { CreateAdminDto } from '../../user/dto/create-admin.dto';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
@@ -16,32 +32,32 @@ import { AuthService } from '../services/auth.service';
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
 export class AuthController {
-    constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
-    @ApiOkResponse()
-    @ApiForbiddenResponse()
-    @UseGuards(LocalAuthGuard)
-    @Post('login')
-    async login(@Request() req) {
-        return await this.authService.login(req.user);
-    }
+  @ApiOkResponse()
+  @ApiForbiddenResponse()
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req) {
+    return await this.authService.login(req.user);
+  }
 
-    @ApiCreatedResponse()
-    @Post('signup')
-    async signUp(@Body() createUserDto: CreateUserDto) {
-        return await this.authService.create(createUserDto);
-    }
+  @ApiCreatedResponse()
+  @Post('signup')
+  async signUp(@Body() createUserDto: CreateUserDto) {
+    return await this.authService.create(createUserDto);
+  }
 
-    @Post('createAdmin')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.ADMIN)
-    createAdmin(@Body() body: CreateAdminDto) {
-        return this.authService.createAdmin(body);
-    }
+  @Post('createAdmin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  createAdmin(@Body() body: CreateAdminDto) {
+    return this.authService.createAdmin(body);
+  }
 
-    @Put('changePassword')
-    @UseGuards(JwtAuthGuard)
-    changePassword(@Req() req, @Body() body: ChangePasswordDto) {
-        return this.authService.changePassword(req.user.email, body);
-    }
+  @Put('changePassword')
+  @UseGuards(JwtAuthGuard)
+  changePassword(@Req() req, @Body() body: ChangePasswordDto) {
+    return this.authService.changePassword(req.user.email, body);
+  }
 }

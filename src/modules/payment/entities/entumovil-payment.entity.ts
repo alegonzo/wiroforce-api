@@ -1,28 +1,34 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class EntumovilPayment {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    msgId: string;
+  @Column()
+  msgId: string;
 
-    @Column()
-    body: string;
+  @Column()
+  body: string;
 
-    @Column()
-    @Index()
-    phoneSender: string;
+  @Column()
+  @Index()
+  phoneSender: string;
 
-    @Column()
-    entumovilPhone: string;
-    
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column()
+  entumovilPhone: string;
 
-    constructor(partial: Partial<EntumovilPayment>) {
-        Object.assign(this, partial);
-    }
+  @CreateDateColumn()
+  createdAt: Date;
 
+  constructor(partial: Partial<EntumovilPayment>) {
+    Object.assign(this, partial);
+  }
 }

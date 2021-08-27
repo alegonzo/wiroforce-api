@@ -40,6 +40,18 @@ export class Application {
   active: boolean;
 
   @ApiProperty()
+  @Column({
+    default: false,
+  })
+  paid: boolean;
+
+  @ApiProperty()
+  @Column({
+    default: null,
+  })
+  receiptUrl: string;
+
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 

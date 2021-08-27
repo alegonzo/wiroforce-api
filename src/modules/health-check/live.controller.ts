@@ -5,9 +5,8 @@ import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
 @Throttle(10, 360)
 @Controller('live')
 export class LiveController {
-
-    @Get()
-    checkLive() {
-        return true;
-    }
+  @Get()
+  checkLive() {
+    return true;
+  }
 }

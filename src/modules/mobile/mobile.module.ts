@@ -5,13 +5,11 @@ import { MobileController } from './controllers/mobile.controller';
 import { MobileAuthMiddleware } from './middlewares/mobile-auth.middleware';
 
 @Module({
-    imports: [ApplicationModule, ProductModule],
-    controllers: [MobileController]
+  imports: [ApplicationModule, ProductModule],
+  controllers: [MobileController],
 })
 export class MobileModule implements NestModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-            .apply(MobileAuthMiddleware)
-            .forRoutes("mobile");
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MobileAuthMiddleware).forRoutes('mobile');
+  }
 }
