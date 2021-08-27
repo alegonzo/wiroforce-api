@@ -107,6 +107,8 @@ export class ApplicationController {
   @Get(':id/receipt')
   @Roles(Role.ADMIN)
   async findOneReceipt(@Param('id') id: number, @Res() res): Promise<any> {
-    return (await this.applicationService.downloadReceiptImage(id)).pipe(res);
+    const file = await this.applicationService.downloadReceiptImage(id);
+    res.set('Content-Type', 'image/*');
+    return file.pipe(res);
   }
 }

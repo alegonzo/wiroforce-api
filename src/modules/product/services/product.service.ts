@@ -92,7 +92,14 @@ export class ProductService {
     });
 
     return new PaginatedResponseDto({
-      result: result[0],
+      result: result[0].map((item) => {
+        if (item.imageUrl) {
+          item.imageUrl = this.minioClient.buildMinioFilesPublicUrl(
+            item.imageUrl,
+          );
+        }
+        return item;
+      }),
       count: result[1],
     });
   }

@@ -37,7 +37,6 @@ export class ApplicationService {
         companyId: company.id,
       },
     });
-    console.log(appsCount);
     const isPaid = appsCount[1] >= 2 && company.name !== 'Conwiro';
 
     if (isPaid && !files.receipt) {

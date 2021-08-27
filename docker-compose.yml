@@ -13,7 +13,7 @@ services:
        - DB_NAME=wiroforce
        - MINIO_HOST_URL=minio
        - MINIO_HOST_PORT=9000
-       - MINIO_URL=conwiro.nat.cu
+       - MINIO_URL=https://conwiro.nat.cu
        - MINIO_PORT=9016
        - MINIO_ACCESS_KEY=admin775
        - MINIO_SECRET_KEY=Jo8Pm*gh

@@ -96,7 +96,7 @@ export class MinioClientService {
 
   buildMinioFilesPublicUrl(filePath: string): string {
     return (
-      `https://${this.configService.get<string>('MINIO_URL')}` +
+      `${this.configService.get<string>('MINIO_URL')}` +
       `/${this.configService.get<string>('DEFAULT_BUCKET')}` +
       `/${filePath}`
     );
