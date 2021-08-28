@@ -13,6 +13,7 @@ import * as Str from '@supercharge/strings';
 import { CompanyService } from '../../company/services/company.service';
 import { Company } from '../../company/entities/company.entity';
 import { PaginatedResponseDto } from '../../../common/dto/paginated-response.dto';
+import { MailService } from '../../mail/mail.service';
 
 @Injectable()
 export class ApplicationService {
@@ -21,6 +22,7 @@ export class ApplicationService {
     private applicationRepository: Repository<Application>,
     private companyService: CompanyService,
     private minioClient: MinioClientService,
+    private mailService: MailService,
   ) {}
 
   async create(
@@ -161,6 +163,22 @@ export class ApplicationService {
       });
     }
     application.active = !application.active;
+
+    if (application.active && application.paid) {
+      await this.mailService.sendEmail(
+        req.user,
+        `Registro de aplicación "${application.name}"`,
+        `Su aplicación "${application.name}" ha sido activada. Ingrese en la plataforma para gestionarla.`,
+      );
+    }
+    if (!application.active) {
+      await this.mailService.sendEmail(
+        req.user,
+        'Cambio de estado de aplicación',
+        `Su aplicación "${application.name}" ha sido desactivada. Contacte al equipo de soporte si esto es un error.`,
+      );
+    }
+
     return this.applicationRepository.save(application);
   }
 

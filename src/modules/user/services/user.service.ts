@@ -84,8 +84,8 @@ export class UserService {
       user,
       'Cambio en su cuenta de WiroForce',
       user.active
-        ? 'Su cuenta ha sido activada'
-        : 'Su cuenta ha sido desactivada',
+        ? 'Su cuenta ha sido activada. Ingrese en la plataforma y complete sus datos en la sección "Cuenta" para comenzar a utilizar nuestros servicios.'
+        : 'Su cuenta ha sido desactivada. Contacte al equipo de soporte si se debe a un error de la plataforma.',
     );
     return this.userRepository.save(user);
   }

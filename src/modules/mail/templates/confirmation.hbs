@@ -5,17 +5,24 @@
     <meta http-equiv="Content-Type" content="text/html; charset=<?= Yii::$app->charset ?>" />
     <title></title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+        body {
+            font-family: 'Rubik', sans-serif;
+        }
+
         .background {
             background: linear-gradient(135deg, rgba(11, 3, 42, 1) 0%, rgba(118, 38, 45, 1) 100%);
             padding: 15px;
-
         }
 
         .container {
             color: white;
             border: 2px solid rgba(255, 143, 33, 1);
             border-radius: 14px;
-            padding: 15px;
+            padding: 35px;
+            text-align: left;
+
         }
 
         .orange {
@@ -30,18 +37,22 @@
             margin-bottom: 2px;
             margin-top: 2px;
             color: white;
+            font-size: 20px;
         }
     </style>
 </head>
 
 <body class="background">
     <div class="container">
-        <p>Hola {{ name }},</p>
-        <p>
+
+        <p>Hola <strong>{{ name }}</strong>,</p>
+        <p style="margin-top: 30px; margin-bottom: 30px;">
             {{ info }}
         </p>
+        <p>No responder a este correo. Saludos, el equipo de WiroForce.</p>
+
     </div>
-    <p>If you did not request this email you can safely ignore it.</p>
+
     <p style="margin-top: 30px; text-align: center; color: rgb(3, 188, 230);">Copyright &copy;
         All rights reserved | Made by ConWiro
     </p>

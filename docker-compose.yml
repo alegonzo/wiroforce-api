@@ -23,6 +23,10 @@ services:
        - MAIL_USER=wiroforce@gmail.com
        - MAIL_PASSWORD=Wir0F0rce.2021
        - MAIL_FROM=wiroforce@gmail.com
+       - RABBITMQ_USER=admin
+       - RABBITMQ_PASSWORD=U8*!weRt87
+       - RABBITMQ_HOST=rabbitmq:5672/wiroforce
+       - RABBITMQ_QUEUE_NAME=wiroforce_payments
      build:
           context: .
      ports:
