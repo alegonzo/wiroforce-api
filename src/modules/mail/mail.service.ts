@@ -6,13 +6,24 @@ import { User } from '../user/entities/user.entity';
 export class MailService {
   constructor(private mailerService: MailerService) {}
 
-  async sendEmail(user: User, subject: string, info: string) {
+  async sendEmailToUser(user: User, subject: string, info: string) {
     await this.mailerService.sendMail({
       to: user.email,
       subject: subject,
-      template: './confirmation', // `.hbs` extension is appended automatically
+      template: './to_user',
       context: {
         name: user.fullName,
+        info: info,
+      },
+    });
+  }
+
+  async sendEmailToAdmin(subject: string, info: string) {
+    await this.mailerService.sendMail({
+      to: 'alegonzo97@gmail.com',
+      subject: subject,
+      template: './to_admin',
+      context: {
         info: info,
       },
     });

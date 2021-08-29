@@ -51,6 +51,12 @@ export class UserService {
     });
   }
 
+  async findOneByCompanyId(companyId: number): Promise<User> {
+    return this.userRepository.findOne({
+      where: { companyId: companyId },
+    });
+  }
+
   findOneById(id: number): Promise<User> {
     return this.userRepository.findOne(id, {
       relations: ['company', 'profile'],
@@ -58,6 +64,10 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    await this.mailService.sendEmailToAdmin(
+      'Nuevo usuario registrado',
+      `El usuario "${createUserDto.fullName}" con correo "${createUserDto.email}" ha creado el estudio "${createUserDto.company}".`,
+    );
     return this.userRepository.save({
       ...createUserDto,
       profile: new Profile({}),
@@ -80,7 +90,7 @@ export class UserService {
   async updateStatus(id: number): Promise<User> {
     const user = await this.userRepository.findOne(id);
     user.active = !user.active;
-    await this.mailService.sendEmail(
+    await this.mailService.sendEmailToUser(
       user,
       'Cambio en su cuenta de WiroForce',
       user.active

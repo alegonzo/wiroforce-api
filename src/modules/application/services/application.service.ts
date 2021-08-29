@@ -14,6 +14,7 @@ import { CompanyService } from '../../company/services/company.service';
 import { Company } from '../../company/entities/company.entity';
 import { PaginatedResponseDto } from '../../../common/dto/paginated-response.dto';
 import { MailService } from '../../mail/mail.service';
+import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class ApplicationService {
@@ -23,6 +24,7 @@ export class ApplicationService {
     private companyService: CompanyService,
     private minioClient: MinioClientService,
     private mailService: MailService,
+    private userService: UserService,
   ) {}
 
   async create(
@@ -95,6 +97,10 @@ export class ApplicationService {
       files.image[0].buffer,
     );
     if (isPaid) {
+      await this.mailService.sendEmailToAdmin(
+        'Se ha creado una aplicación de pago',
+        `El estudio ${company.name} ha registrado la aplicación de pago ${application.name}.`,
+      );
       await this.minioClient.uploadFileBufferToSecret(
         application.receiptUrl,
         files.receipt[0].buffer,
@@ -164,16 +170,20 @@ export class ApplicationService {
     }
     application.active = !application.active;
 
+    const user = await this.userService.findOneByCompanyId(
+      application?.companyId,
+    );
+
     if (application.active && application.paid) {
-      await this.mailService.sendEmail(
-        req.user,
+      await this.mailService.sendEmailToUser(
+        user,
         `Registro de aplicación "${application.name}"`,
         `Su aplicación "${application.name}" ha sido activada. Ingrese en la plataforma para gestionarla.`,
       );
     }
     if (!application.active) {
-      await this.mailService.sendEmail(
-        req.user,
+      await this.mailService.sendEmailToUser(
+        user,
         'Cambio de estado de aplicación',
         `Su aplicación "${application.name}" ha sido desactivada. Contacte al equipo de soporte si esto es un error.`,
       );
