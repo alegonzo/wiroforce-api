@@ -36,7 +36,7 @@ export class CreateProductDto {
   @ApiPropertyOptional()
   @IsOptional()
   @MaxLength(80)
-  @Matches(SPECIAL_CHARS_REGEXP)
+  //@Matches(SPECIAL_CHARS_REGEXP)
   description: string;
 
   @ApiProperty()
