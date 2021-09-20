@@ -30,15 +30,15 @@ export class Product {
   price: number;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: null, nullable: true })
   description: string;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: null, nullable: true })
   resourceAmount: string;
 
   @ApiProperty()
-  @Column({ nullable: true })
+  @Column({ default: null, nullable: true })
   imageUrl: string;
 
   @ApiProperty()
@@ -46,7 +46,7 @@ export class Product {
   active: boolean;
 
   @ApiProperty()
-  @Column()
+  @Column({ default: false })
   offline: boolean;
 
   @ApiProperty()
