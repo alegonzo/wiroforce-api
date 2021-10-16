@@ -6,6 +6,7 @@ import { useContainer } from 'class-validator';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { MinioClientService } from './common/clients/minio.client.service';
+import { PaymentService } from './modules/payment/services/payment.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -39,9 +40,9 @@ async function bootstrap() {
     },
   });
   await app.startAllMicroservicesAsync();
-  //const paymentService = app.get(PaymentService);
+  const paymentService = app.get(PaymentService);
   //await paymentService.loadData();
-  //await paymentService.createPaymentsFromEntumovil();
+  await paymentService.createPaymentsFromEntumovil();
 
   //Swagger setup
   /*const options = new DocumentBuilder()
