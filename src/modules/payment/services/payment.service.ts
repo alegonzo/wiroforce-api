@@ -103,6 +103,7 @@ export class PaymentService {
       entumovilPayment.mstext = data[i].body;
       entumovilPayment.sender = data[i].entumovilPhone;
       entumovilPayment.createdAt = data[i].createdAt;
+      //await this.entumovilPaymentRepository.save(entumovilPayment);
       const smsBodyData = entumovilPayment.mstext.split(' ');
       const application =
         smsBodyData.length > 1
@@ -114,7 +115,7 @@ export class PaymentService {
           : null;
       const channel = smsBodyData.length === 4 ? smsBodyData[4] : null;
 
-      if (product) {
+      /*if (product) {
         const totalAmount =
           entumovilPayment.sender === PaymentValues.shortNumber4
             ? PaymentValues.shortNumber4Price * PaymentValues.entumovilFee
@@ -135,7 +136,7 @@ export class PaymentService {
             createdAt: data[i].createdAt,
           }),
         );
-      }
+      }*/
       console.log(i);
     }
   }
