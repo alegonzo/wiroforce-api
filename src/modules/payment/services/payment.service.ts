@@ -140,4 +140,17 @@ export class PaymentService {
       console.log(i);
     }
   }
+
+  async fixDates() {
+    const json = JSON.parse(fs.readFileSync('./payments.json').toString());
+    const data = json.data;
+    for (let i = 0; i < data.length; i++) {
+      const msg = await this.entumovilPaymentRepository.findOne({
+        where: { msgId: data[i].msgId },
+      });
+      msg.createdAt = data[i].createdAt;
+      await this.entumovilPaymentRepository.save(msg);
+    }
+    console.log('dates fixed');
+  }
 }
