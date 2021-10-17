@@ -42,7 +42,7 @@ async function bootstrap() {
   await app.startAllMicroservicesAsync();
   const paymentService = app.get(PaymentService);
   //await paymentService.loadData();
-  await paymentService.fixDates();
+  //await paymentService.fixDates();
 
   //Swagger setup
   /*const options = new DocumentBuilder()
