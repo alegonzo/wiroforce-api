@@ -19,8 +19,8 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const minioConfig = app.get(MinioClientService);
-  await minioConfig.createDefaultBucket();
-  await minioConfig.createSecretBucket();
+  //await minioConfig.createDefaultBucket();
+  //await minioConfig.createSecretBucket();
   await minioConfig.setPublicPolicy();
 
   //RabbitMQ

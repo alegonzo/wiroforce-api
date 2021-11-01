@@ -110,6 +110,7 @@ export class ApplicationService {
   }
 
   async findAll(query: QueryAllApplicationDto): Promise<PaginatedResponseDto> {
+    console.log(query);
     const filters = {};
     if (query.search !== '')
       Object.assign(filters, { name: Like(`%${query.search}%`) });

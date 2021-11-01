@@ -24,14 +24,13 @@ export class UserService {
   ) {}
 
   async findAll(queryDto: GetAllUsersQueryDto): Promise<PaginatedResponseDto> {
+    const where = {};
+    if (queryDto.search !== '') {
+      where['email'] = Like(`%${queryDto.search}%`);
+    }
     const result = await this.userRepository.findAndCount({
       relations: ['profile', 'company'],
-      where:
-        queryDto?.search !== ''
-          ? {
-              email: Like(`%${queryDto.search}%`),
-            }
-          : undefined,
+      where,
       skip: queryDto.size * queryDto.page,
       take: queryDto.size,
       order: {
