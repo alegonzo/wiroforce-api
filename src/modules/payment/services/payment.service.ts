@@ -150,11 +150,22 @@ export class PaymentService {
     const json = JSON.parse(fs.readFileSync('./payments.json').toString());
     const data = json.data;
     for (let i = 0; i < data.length; i++) {
-      const msg = await this.entumovilPaymentRepository.findOne({
+      /*const msg = await this.entumovilPaymentRepository.findOne({
         where: { msgId: data[i].msgId },
       });
       msg.entumovilPhone = '8023';
-      await this.entumovilPaymentRepository.save(msg);
+      await this.entumovilPaymentRepository.save(msg);*/
+      const payment = await this.paymentRepository.findOne({
+        where: {
+          createdAt: data[i].createdAt,
+        },
+      });
+      if (payment) {
+        payment.clientAmount = 10;
+        payment.originalAmount = 25;
+        await this.paymentRepository.save(payment);
+      }
+      console.log(i);
     }
     console.log('fixed');
   }
