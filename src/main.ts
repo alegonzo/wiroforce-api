@@ -41,7 +41,7 @@ async function bootstrap() {
   });
   await app.startAllMicroservicesAsync();
   const paymentService = app.get(PaymentService);
-  //await paymentService.loadData();
+  await paymentService.createPaymentsFromEntumovil();
   //await paymentService.fixDates();
 
   //Swagger setup
