@@ -103,7 +103,12 @@ export class PaymentService {
       entumovilPayment.mstext = data[i].body;
       entumovilPayment.sender = data[i].entumovilPhone;
       entumovilPayment.createdAt = data[i].createdAt;
-      await this.entumovilPaymentRepository.save({ ...data[i] });
+      const exists = await this.entumovilPaymentRepository.findOne({
+        where: {
+          msgId: data[i].msgId,
+        },
+      });
+      if (!exists) await this.entumovilPaymentRepository.save({ ...data[i] });
       const smsBodyData = entumovilPayment.mstext.split(' ');
       const application =
         smsBodyData.length > 1
