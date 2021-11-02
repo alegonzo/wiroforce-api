@@ -146,16 +146,16 @@ export class PaymentService {
     }
   }
 
-  async fixDates() {
+  async fix() {
     const json = JSON.parse(fs.readFileSync('./payments.json').toString());
     const data = json.data;
     for (let i = 0; i < data.length; i++) {
       const msg = await this.entumovilPaymentRepository.findOne({
         where: { msgId: data[i].msgId },
       });
-      msg.createdAt = data[i].createdAt;
+      msg.entumovilPhone = '8023';
       await this.entumovilPaymentRepository.save(msg);
     }
-    console.log('dates fixed');
+    console.log('fixed');
   }
 }
