@@ -1,6 +1,12 @@
+import { CompetitiveRankingFrecuency } from '../enum/competitive-ranking-frecuency.enum';
+
 export class CreateRankingDto {
   name: string;
+  description: string;
   applicationId: string;
-  static: boolean;
+  competitive: boolean;
   price: string;
+  closeHour: string;
+  playersToPrice: number;
+  resetFrecuency: CompetitiveRankingFrecuency;
 }
