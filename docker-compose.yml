@@ -21,7 +21,7 @@ services:
        - SECRET_BUCKET=wiro-force-secret
        - MAIL_SERVICE=gmail
        - MAIL_USER=wiroforce@gmail.com
-       - MAIL_PASSWORD=Wir0F0rce.2021
+       - MAIL_PASSWORD=Wir0F0rce.2022
        - MAIL_FROM=wiroforce@gmail.com
        - RABBITMQ_USER=admin
        - RABBITMQ_PASSWORD=U8*!weRt87
