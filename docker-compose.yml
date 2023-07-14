@@ -9,22 +9,22 @@ services:
        - DB_HOST=db
        - DB_PORT=3306
        - DB_USER=root
-       - DB_PASSWORD=8*9klMy6!Lp023
+       - DB_PASSWORD=xxxxx
        - DB_NAME=wiroforce
        - MINIO_HOST_URL=minio
        - MINIO_HOST_PORT=9000
-       - MINIO_URL=https://conwiro.nat.cu
-       - MINIO_PORT=9016
-       - MINIO_ACCESS_KEY=admin775
-       - MINIO_SECRET_KEY=Jo8Pm*gh
+       - MINIO_URL=xxxx
+       - MINIO_PORT=xxxx
+       - MINIO_ACCESS_KEY=xxxxx
+       - MINIO_SECRET_KEY=xxxxx
        - DEFAULT_BUCKET=wiroforce-storage
        - SECRET_BUCKET=wiro-force-secret
        - MAIL_SERVICE=gmail
-       - MAIL_USER=wiroforce@gmail.com
-       - MAIL_PASSWORD=Wir0F0rce.2022
-       - MAIL_FROM=wiroforce@gmail.com
-       - RABBITMQ_USER=admin
-       - RABBITMQ_PASSWORD=U8*!weRt87
+       - MAIL_USER=xxxxx
+       - MAIL_PASSWORD=xxxxx
+       - MAIL_FROM=xxxxx
+       - RABBITMQ_USER=xxxx
+       - RABBITMQ_PASSWORD=xxxxx
        - RABBITMQ_HOST=rabbitmq:5672/wiroforce
        - RABBITMQ_QUEUE_NAME=wiroforce_payments
      build:
@@ -41,7 +41,7 @@ services:
        - db_data:/var/lib/mysql
      restart: always
      environment:
-       - MYSQL_ROOT_PASSWORD=8*9klMy6!Lp023
+       - MYSQL_ROOT_PASSWORD=xxxxxx
        - MYSQL_DATABASE=wiroforce
      ports:
        - 9015:3306
